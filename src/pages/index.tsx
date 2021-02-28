@@ -8,9 +8,12 @@ import { Profile } from '../components/Profile';
 import { CountdownProvider } from '../contexts/CountdownContext';
 import { ChallengesProvider } from '../contexts/ChallengesContext';
 
+import { User } from '../models/user.model';
+
 import styles from '../styles/pages/Home.module.css';
 
 interface HomeProps {
+	currentUser: User;
 	level: number;
 	currentExperience: number;
 	challengesCompleted: number;
@@ -32,7 +35,7 @@ export default function Home(props: HomeProps) {
 				<CountdownProvider>
 					<section>
 						<div>
-							<Profile />
+							<Profile currentUser={props.currentUser} />
 							<CompletedChallenges />
 							<Countdown />
 						</div>
@@ -47,8 +50,22 @@ export default function Home(props: HomeProps) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-	const { level, currentExperience, challengesCompleted } = context.req.cookies;
+	const {
+		currentUser,
+		level,
+		currentExperience,
+		challengesCompleted,
+	} = context.req.cookies;
+
+	if (!currentUser) {
+		context.res.writeHead(302, {
+			Location: 'login',
+		});
+		context.res.end();
+	}
+
 	const user = {
+		currentUser: JSON.parse(currentUser),
 		level: Number(level),
 		currentExperience: Number(currentExperience),
 		challengesCompleted: Number(challengesCompleted),
