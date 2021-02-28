@@ -9,7 +9,7 @@ export const Profile = () => {
 		<div className={styles.profileContainer}>
 			<img src='https://github.com/rafashiga.png' alt='Usuário' />
 			<div>
-				<strong>Nome do usuário</strong>
+				<strong>Rafael</strong>
 				<p>
 					<img src='icons/level.svg' alt='level' />
 					Level {level}
