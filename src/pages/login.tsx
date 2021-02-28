@@ -1,26 +1,27 @@
 import { useState } from 'react';
 import { GetServerSideProps } from 'next';
 import Cookies from 'js-cookie';
-import { AiFillGithub, AiOutlineArrowRight } from 'react-icons/ai';
+import {
+	AiFillGithub,
+	AiOutlineArrowRight,
+	AiOutlineAlert,
+} from 'react-icons/ai';
 import api from '../services/api';
 
 import styles from '../styles/pages/Login.module.css';
 
-interface LoginProps {
-	currentUser: any;
-	level: number;
-	currentExperience: number;
-	challengesCompleted: number;
-}
-
 export default function Login() {
 	const [username, setUsername] = useState('');
+	const [hasError, setHasError] = useState(false);
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
+		setHasError(false);
 		const response = await api.get(`/users/${username}`);
 		if (response.status === 200) {
 			Cookies.set('currentUser', JSON.stringify(response.data));
+		} else {
+			setHasError(true);
 		}
 	};
 
@@ -44,6 +45,12 @@ export default function Login() {
 							<AiOutlineArrowRight />
 						</button>
 					</form>
+					{hasError && (
+						<span className={styles.loginError}>
+							<AiOutlineAlert />
+							Verifique se o username foi digitado corretamente
+						</span>
+					)}
 				</section>
 			</div>
 		</div>
