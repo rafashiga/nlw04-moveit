@@ -47,8 +47,22 @@ export default function Home(props: HomeProps) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-	const { level, currentExperience, challengesCompleted } = context.req.cookies;
+	const {
+		currentUser,
+		level,
+		currentExperience,
+		challengesCompleted,
+	} = context.req.cookies;
+
+	if (!currentUser) {
+		context.res.writeHead(302, {
+			Location: 'login',
+		});
+		context.res.end();
+	}
+
 	const user = {
+		currentUser,
 		level: Number(level),
 		currentExperience: Number(currentExperience),
 		challengesCompleted: Number(challengesCompleted),
