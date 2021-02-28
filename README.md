@@ -18,6 +18,7 @@
   <a href="#information_source-how-to-use">How to use</a>
   <br>
   <br>
+  <img src="./public/images/login-page.png">
   <img src="./public/images/website.png">
   <br>
 </p>
