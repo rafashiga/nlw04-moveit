@@ -62,6 +62,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 			Location: 'login',
 		});
 		context.res.end();
+		return { props: {} };
 	}
 
 	const user = {
