@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useRouter } from 'next/router';
 import { GetServerSideProps } from 'next';
 import Cookies from 'js-cookie';
 import {
@@ -11,6 +12,7 @@ import api from '../services/api';
 import styles from '../styles/pages/Login.module.css';
 
 export default function Login() {
+	const router = useRouter();
 	const [username, setUsername] = useState('');
 	const [hasError, setHasError] = useState(false);
 
@@ -20,6 +22,7 @@ export default function Login() {
 		const response = await api.get(`/users/${username}`);
 		if (response.status === 200) {
 			Cookies.set('currentUser', JSON.stringify(response.data));
+			router.push('/');
 		} else {
 			setHasError(true);
 		}
